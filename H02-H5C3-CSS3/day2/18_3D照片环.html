@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			body{
+				background: black;
+				color: #ccc;
+				cursor: pointer;
+			}
+			.stage{
+				width: 800px;
+				height: 400px;
+				margin: 0 auto;
+				/* 景深 */
+				perspective: 900px;
+				border: 1px solid #000;
+			}
+			.stage .unit{
+				width: 800px;
+				height: 400px;
+				position: relative;
+				
+				/* 9张图片作为一个整体*/
+				transform-style: preserve-3d;
+				transition: all 0.5s ease 0s;
+			}
+			.stage .unit ul{
+				list-style: none;
+			}
+			
+			/* 所有图片叠在一起 */
+			.stage .unit ul li{
+				position: absolute;
+				left: 300px;
+				top: 135px;
+			}
+			
+			/* 第1张 */
+			.stage .unit ul li:nth-child(1) {
+				/* 第1张不需要进行额外的设定，直接往前挪动即可*/
+				transform: translateZ(400px);
+			}
+			
+			/* 第2张 */
+			.stage .unit ul li:nth-child(2) {
+				/* 因为1圈是 360，总共有9张，所以每张的旋转间隙是 40deg*/
+				transform: rotateY(40deg) translateZ(400px);
+			}
+			/* 第3张 */
+			.stage .unit ul li:nth-child(3) {
+				transform: rotateY(80deg) translateZ(400px);
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h1>请滚动滚轮</h1>
+		<div class="stage">
+			<div class="unit">
+				<ul>
+					<li><img src="img/1.png"/></li>
+					<li><img src="img/2.png"/></li>
+					<li><img src="img/3.png"/></li>
+					<li><img src="img/4.png"/></li>
+					<li><img src="img/5.png"/></li>
+					<li><img src="img/6.png"/></li>
+					<li><img src="img/7.png"/></li>
+					<li><img src="img/8.png"/></li>
+					<li><img src="img/9.png"/></li>
+				</ul>
+			</div>
+		</div>
+		
+
+<script type="text/javascript" src="js/jquery-3.2.1.js" ></script>
+<script>
+	
+// 设定每个li的旋转角度 与 平移距离
+
+$(".unit ul li").each(function(i) {
+	$(this).css("transform", "rotateY("+40*i+"deg) translateZ(400px)");
+})
+
+// 整个物体旋转
+//$(".unit").css("transform", "rotateY(80deg)");
+
+
+// 拖拽思路
+//   1. 给舞台添加 鼠标按下事件
+//   2. 给  document 添加  mousemove 事件
+//   3. 给  document 添加 mouseup 事件
+
+$(".stage").mousedown(function(e) {
+	
+	// 阻止浏览器默认行为
+	e.preventDefault();
+	
+	// (1) 得到点击的 坐标
+	var startX = e.clientX;
+	var startY = e.clientY;
+	
+	// $(document) 代表将 document 转换成 jQuery对象
+	$(document).mousemove(function (e) {
+		// 计算移动点与之前初始点的差值
+		var detaX = e.clientX - startX;
+		var detaY = e.clientY - startY;
+		
+		// 旋转unit
+		$(".unit").css("transform", "rotateX("+ (-detaY/5) +"deg) rotateY("+detaX/5+"deg)")
+	})
+	
+	$(document).mouseup(function() {
+		// 关闭事件处理函数
+		$(document).off("mousemove")
+	})
+})
+
+	
+</script>
+
+		
+	</body>
+</html>

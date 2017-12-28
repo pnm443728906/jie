@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+		
+		/* 1. 定义3D 景深 */
+		.stage {
+			perspective: 1000px;
+			
+			margin: 200px;
+			
+			position: relative;
+		}
+		
+		/* 2. 让图片叠在一起 */
+		.unit img {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		
+		/*3. 让前面的图片 旋转 90度*/
+		.unit img.baby {
+			transform: rotateX(90deg) translateZ(129px);
+		}
+		
+		/* 往前挪动， 因为是靠近眼睛，所以平移z轴*/
+		.unit img.xiaoming {
+			transform: translateZ(129px);
+		}
+		
+		/* 4. 旋转整个方块 */
+		.unit {
+			
+			/* 将2张图片作为整体的设定 */
+			transform-style: preserve-3d;
+			
+			transition: all 5s;
+		}
+		
+		/* 旋转*/
+		.stage:hover .unit {
+			transform: rotateX(-90deg);
+		}
+		
+		</style>
+	</head>
+	<body>
+		<!--舞台-->
+		<div class="stage">
+			<div class="unit">
+				<img src="img/xiaoming.png" alt="" class="xiaoming"/>
+				<img src="img/baby.png" alt="" class="baby"/>
+			</div>
+		</div>
+	</body>
+</html>

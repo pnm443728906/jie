@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+  
+
+	<style>
+	/* * 代表选择所有的元素，也就是说对所有元素都有作用*/
+	* {
+		/*外边距 都为 0*/
+		margin: 0;
+		/*内边距 都为 0*/
+		padding: 0;
+	}
+
+	.container {
+		width: 100%;  
+
+		/* 高度为 XX 像素 */
+		/* vh 代表整个高度的1%，所以 100vh 就是整个页面的高度 */
+		height: 100vh;
+
+		background: url(img/bg.jpg);
+
+		background-size: 100% 100%;
+	}
+
+	.firefly {
+		width: 50px;
+		height: 50px;
+		background: url(img/1.gif);
+		background-size: 100% 100%;
+		position: absolute; 
+	}
+	</style>
+
+
+	<div class="container" id="box1"> </div>
+
+
+<script src="animate-2.0.1.js"></script>
+
+<script>
+/*
+面向对象的思路实现 萤火虫效果：
+
+1. 找对象
+					属性							方法
+	萤火虫	发光、大小、形状、颜色、脚、品种		飞
+	树		大小、品种、高度...						光合作用，摇动、打人
+	路灯    
+	蚂蚁
+
+2. 实现对象
+
+	//  document.createElement 创建标签
+	//  document.getElementById  通过id获取标签
+	//  document.getElementsByTagName  通过标签名获取标签
+【练习】 采用面向对象的思路来实现萤火虫。  14:20对对
+*/
+
+function FireFly() {
+
+	//     属性
+	// ele 代表元素， 属性在html中就是标签+CSS
+	this.ele = document.createElement("div");
+
+	this.ele.className = "firefly";
+
+	document.body.appendChild(this.ele);
+
+	// 让出现位置随机
+	var x = Math.random() * 1000;
+	var y = Math.random() * 300;
+	this.ele.style.left = x + "px"
+	this.ele.style.top = y + "px"
+
+
+	
+	//     行为
+	this.fly = function() {
+			
+		// clientWidth 代表元素的宽度（包括width+padding）
+		// offsetWidth 代表元素的宽度（包括width+padding+border）
+		var x = Math.random() * (document.body.offsetWidth - 60);
+		var y = Math.random() * (document.body.offsetHeight - 60);
+
+		// 定义变量 self 先备份下 萤火虫对象
+		var self = this;
+
+		animate(this.ele, {left: x, top: y}, 3000, "QuadEaseOut", function() {
+			// 萤火虫继续飞
+			// 因为此处的this不是萤火虫，是萤火虫ele，所以需要先备份下萤火虫
+			self.fly();
+		})
+	}
+}
+
+for (var i = 0; i < 20; i++)
+{
+	new FireFly().fly();
+}
+
+
+/*
+var count = 0;
+
+var t = setInterval(function() {
+	new FireFly().fly();
+
+	count++;
+
+	if (count >= 5)
+	{
+		clearInterval(t)
+	}
+}, 1000)
+*/
+
+</script>
+
+ </body>
+</html>
